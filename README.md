@@ -2,7 +2,7 @@
 
 **PHP / Laravel / WordPress / REST API / SaaS Engineer**
 
-I build and debug production web systems—especially the parts that become difficult once a project moves beyond basic CRUD: plugin conflicts, API integrations, background jobs, multi-tenant data, webhooks, database issues, and existing systems that need careful troubleshooting instead of a rewrite.
+I build and debug production web systems—especially the parts that become difficult once a project moves beyond basic CRUD: plugin conflicts, API integrations, background jobs, multi-tenant data, payments, webhooks, database issues, and existing systems that need careful troubleshooting instead of a rewrite.
 
 ## What I work on
 
@@ -10,16 +10,17 @@ I build and debug production web systems—especially the parts that become diff
 WordPress & PHP       Plugin development, troubleshooting, hooks, AJAX, REST APIs
 Laravel & SaaS        Backend architecture, APIs, queues, multi-tenancy, dashboards
 API Integrations      Webhooks, HMAC signing, retries, idempotency, external services
+Commerce & Payments   E-commerce workflows, Stripe Checkout, payment webhooks
 Databases             MySQL, schema design, migrations, query/debugging work
-Frontend Integration  JavaScript, responsive admin/product interfaces
 Mobile                 Flutter apps connected to Laravel APIs
 ```
 
-## Featured engineering showcases
+## Featured engineering work
 
 | Project | What it demonstrates |
 |---|---|
 | **[WP Integration Toolkit](https://github.com/DagemawiDeveloper/wordpress-plugin-development-demo)** | WordPress plugin architecture, REST endpoints, AJAX, signed webhooks, encrypted settings, logging and retry workflows |
+| **[Boldinone](https://github.com/DagemawiDeveloper/Boldinone)** | Real Laravel e-commerce application: catalog, cart, roles/permissions, administration, Stripe Checkout, payment webhooks, orders, wishlist and reviews |
 | **[RelayHub](https://github.com/DagemawiDeveloper/laravel-api-integration-demo)** | Laravel API integrations, queues, HMAC webhooks, idempotency, retries, dead-letter handling and tests |
 | **[SaaS Architecture Showcase](https://github.com/DagemawiDeveloper/saas-architecture-showcase)** | Multi-tenant architecture, security, queue design, observability, deployment and failure-mode decisions |
 
@@ -29,6 +30,7 @@ Mobile                 Flutter apps connected to Laravel APIs
 - “Our API integration works sometimes, but retries create duplicate records.”
 - “We need to receive and verify webhooks securely.”
 - “This Laravel job/API is failing in production and we need the real cause.”
+- “Our checkout/payment callback needs to be reliable and traceable.”
 - “Our SaaS needs tenant isolation, queues, roles and a maintainable backend structure.”
 - “The existing codebase works, but adding features is becoming risky.”
 
@@ -50,7 +52,7 @@ My default engineering priorities are:
 
 1. **Correctness before cleverness**
 2. **Observable integrations instead of silent failures**
-3. **Idempotent/retry-safe background work**
+3. **Idempotent/retry-safe background work and webhooks**
 4. **Clear tenant and authorization boundaries**
 5. **Maintainable extension points instead of core/theme hacks**
 6. **Practical solutions that fit the existing system**
@@ -70,7 +72,7 @@ For private client/product work, I publish sanitized architecture and reference 
 
 ## Public repositories
 
-You can also find older public work here around Laravel, payment integrations, media systems and application prototypes. The featured repositories above are the best starting point if you're evaluating my current backend/WordPress engineering style.
+The featured projects above are the best starting point if you're evaluating my current Laravel, WordPress, integration and system-design work. I am also progressively modernizing older public projects with clearer documentation, security notes and automated quality checks so the public GitHub reflects the engineering work more accurately.
 
 ## Work with me
 
@@ -81,4 +83,4 @@ I’m best suited for projects where you need someone who can **understand an ex
 
 ---
 
-**Core stack:** PHP · Laravel · WordPress · MySQL · JavaScript · REST APIs · Flutter
+**Core stack:** PHP · Laravel · WordPress · MySQL · JavaScript · REST APIs · Stripe · Flutter
