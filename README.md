@@ -12,7 +12,7 @@ Laravel & SaaS        Backend architecture, APIs, queues, multi-tenancy, dashboa
 API Integrations      Webhooks, HMAC signing, retries, idempotency, external services
 Commerce & Payments   E-commerce workflows, Stripe Checkout, payment webhooks
 Databases             MySQL, schema design, migrations, query/debugging work
-Mobile                 Flutter apps connected to Laravel APIs
+Mobile                Flutter apps connected to Laravel APIs
 ```
 
 ## Featured engineering work
@@ -20,9 +20,10 @@ Mobile                 Flutter apps connected to Laravel APIs
 | Project | What it demonstrates |
 |---|---|
 | **[WP Integration Toolkit](https://github.com/DagemawiDeveloper/wordpress-plugin-development-demo)** | WordPress plugin architecture, REST endpoints, AJAX, signed webhooks, encrypted settings, logging and retry workflows |
-| **[Boldinone](https://github.com/DagemawiDeveloper/Boldinone)** | Real Laravel e-commerce application: catalog, cart, roles/permissions, administration, Stripe Checkout, payment webhooks, orders, wishlist and reviews |
+| **[Boldinone](https://github.com/DagemawiDeveloper/Boldinone)** | Real Laravel e-commerce application: catalog, cart, roles/permissions, administration, Stripe Checkout, idempotent payment handling, orders, inventory, wishlist and reviews |
 | **[RelayHub](https://github.com/DagemawiDeveloper/laravel-api-integration-demo)** | Laravel API integrations, queues, HMAC webhooks, idempotency, retries, dead-letter handling and tests |
 | **[SaaS Architecture Showcase](https://github.com/DagemawiDeveloper/saas-architecture-showcase)** | Multi-tenant architecture, security, queue design, observability, deployment and failure-mode decisions |
+| **[Commission Calculation Engine](https://github.com/DagemawiDeveloper/CommissionApp-Dagemawi)** | Framework-independent PHP, business rules, weekly limits, currency conversion, PSR-4 design and PHPUnit testing |
 
 ## The kind of problems I like solving
 
@@ -72,7 +73,7 @@ For private client/product work, I publish sanitized architecture and reference 
 
 ## Public repositories
 
-The featured projects above are the best starting point if you're evaluating my current Laravel, WordPress, integration and system-design work. I am also progressively modernizing older public projects with clearer documentation, security notes and automated quality checks so the public GitHub reflects the engineering work more accurately.
+The featured projects above are the best starting point if you're evaluating my current Laravel, WordPress, integration and system-design work. Older repositories that are only historical artifacts are labeled clearly so they are not confused with current engineering samples.
 
 ## Work with me
 
