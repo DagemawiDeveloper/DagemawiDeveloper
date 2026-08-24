@@ -1,0 +1,45 @@
+name: Deploy redesigned portfolio to Netlify
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "deploy/**"
+      - ".github/workflows/deploy-portfolio-live.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout deployment branch
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Rebuild and verify portfolio package
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat deploy/portfolio.part*.b64 > deploy/portfolio.b64
+          base64 --decode deploy/portfolio.b64 > deploy/portfolio.zip
+          echo "4f18eea5eca46a9678b4851beb43d064083628390222788f0f08a66afdba0d44  deploy/portfolio.zip" | sha256sum --check --strict
+          mkdir -p deploy/site
+          unzip -q deploy/portfolio.zip -d deploy/site
+          test -f deploy/site/index.html
+          test -f deploy/site/resume.html
+          test -f deploy/site/netlify.toml
+
+      - name: Deploy to the existing Netlify site
+        working-directory: deploy/site
+        run: >-
+          npx -y @netlify/mcp@latest
+          --site-id 0f6c9787-1846-48bd-9703-663ac842637d
+          --proxy-path "https://netlify-mcp.netlify.app/proxy/eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIn0..0AB7fcH2JoechDKS.-6AUcREx26-6PRFnwPGkEv52-mShMri8CQW1uv0UEeOqD8_OmH7vXoMkarrfSBrdU7g1kqmwQg8nJ0gHZw_RZ9ALSEn89fvLVWHPhMPUAY33TszulAaqCFD1kAasxpjasxv6Os_B2BPO4bL1wbDtr5Wj133LhEwELVvs_GCUC32W0bQTPTKRE2_-aBqNPr24xxQrifMQt2AoEWwnD0MtrH-FVf4tWSn1AhRkrw-xnMi75nfH4mdSuhLUPGWTma8n2upX_ploA0pIU28JhTrXUBgGPBRjg-TmUdESwUjlh_WSj1mswBPIQqTGHCVqq99GzK60q1Gj1NAthwHuFmqDT0skhtBGvVzupjvnRb2XSIshRFm8fyOVhKM9YatkH99NIlQz-uas.UkYFTvwutb5WS5eSDI9cHQ"
