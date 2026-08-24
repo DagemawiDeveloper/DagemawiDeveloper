@@ -12,9 +12,9 @@ I build and debug production web systems—especially the parts that become diff
 | **[RelayHub](https://github.com/DagemawiDeveloper/laravel-api-integration-demo)** | Executable Laravel package | Laravel 12 package boundaries, deterministic idempotency, queues, retry/backoff, dead-letter handling, authenticated callbacks, lifecycle tests, and [PHP 8.2–8.4 CI](https://github.com/DagemawiDeveloper/laravel-api-integration-demo/actions/workflows/tests.yml) |
 | **[Boldinone](https://github.com/DagemawiDeveloper/Boldinone)** | Executable Laravel commerce application | Local-first Stripe checkout persistence, event-ledger deduplication, checkout recovery, atomic inventory finalization, clean migrations, payment tests, audited locked dependencies, and [PHP 8.2–8.4 CI](https://github.com/DagemawiDeveloper/Boldinone/actions/workflows/quality.yml) |
 | **[Commission Calculation Engine](https://github.com/DagemawiDeveloper/CommissionApp-Dagemawi)** | Executable PHP domain application | Stateful business rules, ISO-week limits, currency normalization, strict CSV validation, regression tests, repository hygiene, and [PHP CI](https://github.com/DagemawiDeveloper/CommissionApp-Dagemawi/actions/workflows/tests.yml) |
-| **[SaaS Architecture Showcase](https://github.com/DagemawiDeveloper/saas-architecture-showcase)** | Architecture documentation | Sanitized decisions from multi-tenant survey/data-collection work: modular monolith design, tenant isolation, mobile idempotency, queues, object storage, observability, and failure modes |
+| **[SaaS Architecture Showcase](https://github.com/DagemawiDeveloper/saas-architecture-showcase)** | Documentation only — not Dagu source | Sanitized ADRs and design notes from private multi-tenant survey/data-platform work: modular monolith design, tenant isolation, mobile idempotency, queues, object storage, observability, and failure modes |
 
-The first four repositories contain executable source and automated verification. The architecture showcase is intentionally documentation-only because the related product source is private.
+The first four repositories contain executable source and automated verification. **The SaaS Architecture Showcase is documentation-only; it is not the Dagu codebase. Dagu is a private commercial product and its production source remains private.**
 
 ## What I work on
 
