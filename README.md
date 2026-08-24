@@ -2,27 +2,28 @@
 
 **PHP / Laravel / WordPress / REST API / SaaS Engineer**
 
-I build and debug production web systems—especially the parts that become difficult after basic CRUD: existing codebases, plugin conflicts, payment reconciliation, API integrations, background jobs, multi-tenant data, webhooks, database failures, and systems that need a careful fix instead of an unnecessary rewrite.
+I build and debug production web systems—especially the parts that become difficult after basic CRUD: unfamiliar codebases, plugin conflicts, payment reconciliation, API integrations, background jobs, multi-tenant data, webhooks, database failures, and systems that need a careful fix instead of an unnecessary rewrite.
 
-## Engineering evidence
+## Featured engineering work
 
-| Project | What the repository proves |
-|---|---|
-| **[WP Integration Toolkit](https://github.com/DagemawiDeveloper/wordpress-plugin-development-demo)** | Installable GPL WordPress plugin; REST/AJAX integration; authenticated webhooks with replay protection; fail-closed secret encryption; bounded logging; PHPUnit and multi-version CI |
-| **[RelayHub](https://github.com/DagemawiDeveloper/laravel-api-integration-demo)** | Laravel package boundaries; queues; deterministic idempotency; retries/backoff; dead-letter handling; inbound/outbound webhook authentication; lifecycle tests and CI |
-| **[Boldinone](https://github.com/DagemawiDeveloper/Boldinone)** | Laravel commerce application; server-authoritative pricing; Stripe signature verification; durable-order reconciliation; row locks; retry-safe inventory finalization; PHPUnit in CI |
-| **[Commission Calculation Engine](https://github.com/DagemawiDeveloper/CommissionApp-Dagemawi)** | Framework-independent PHP domain modeling; stateful weekly business rules; currency normalization; regression tests; reproducible Composer install and repository-hygiene CI |
-| **[SaaS Architecture Showcase](https://github.com/DagemawiDeveloper/saas-architecture-showcase)** | Anonymized ADRs from multi-tenant survey/data-collection work: modular monolith, tenant isolation, idempotent mobile submissions, object storage, queue boundaries and failure modes |
-| **[Telebirr PHP Reference](https://github.com/DagemawiDeveloper/Telebirr)** | Lower-level payment integration, RSA signing, runtime secret configuration, TLS verification, full-history Gitleaks scanning and PHP quality checks |
+| Project | Type | What you can verify |
+|---|---|---|
+| **[WP Integration Toolkit](https://github.com/DagemawiDeveloper/wordpress-plugin-development-demo)** | Executable WordPress plugin | GPL-licensed plugin architecture, REST/AJAX integration, signed webhooks, replay protection, fail-closed secret handling, bounded logs, PHPUnit, and [multi-version CI](https://github.com/DagemawiDeveloper/wordpress-plugin-development-demo/actions/workflows/php-lint.yml) |
+| **[RelayHub](https://github.com/DagemawiDeveloper/laravel-api-integration-demo)** | Executable Laravel package | Laravel 12 package boundaries, deterministic idempotency, queues, retry/backoff, dead-letter handling, authenticated callbacks, lifecycle tests, and [PHP 8.2–8.4 CI](https://github.com/DagemawiDeveloper/laravel-api-integration-demo/actions/workflows/tests.yml) |
+| **[Boldinone](https://github.com/DagemawiDeveloper/Boldinone)** | Executable Laravel commerce application | Local-first Stripe checkout persistence, event-ledger deduplication, checkout recovery, atomic inventory finalization, clean migrations, payment tests, audited locked dependencies, and [PHP 8.2–8.4 CI](https://github.com/DagemawiDeveloper/Boldinone/actions/workflows/quality.yml) |
+| **[Commission Calculation Engine](https://github.com/DagemawiDeveloper/CommissionApp-Dagemawi)** | Executable PHP domain application | Stateful business rules, ISO-week limits, currency normalization, strict CSV validation, regression tests, repository hygiene, and [PHP CI](https://github.com/DagemawiDeveloper/CommissionApp-Dagemawi/actions/workflows/tests.yml) |
+| **[SaaS Architecture Showcase](https://github.com/DagemawiDeveloper/saas-architecture-showcase)** | Architecture documentation | Sanitized decisions from multi-tenant survey/data-collection work: modular monolith design, tenant isolation, mobile idempotency, queues, object storage, observability, and failure modes |
+
+The first four repositories contain executable source and automated verification. The architecture showcase is intentionally documentation-only because the related product source is private.
 
 ## What I work on
 
 ```text
-WordPress & PHP       Plugin development, troubleshooting, hooks, AJAX, REST APIs
-Laravel & SaaS        Backend architecture, APIs, queues, multi-tenancy, dashboards
-API Integrations      Webhooks, HMAC signing, retries, idempotency, external services
-Commerce & Payments   Checkout workflows, signed callbacks, reconciliation, inventory
-Databases             MySQL/MariaDB, schema design, migrations, transactions, debugging
+WordPress & PHP       Plugins, hooks, AJAX, REST APIs, debugging, secure integrations
+Laravel & SaaS        APIs, queues, multi-tenancy, dashboards, domain workflows
+API Integrations      HMAC webhooks, retries, idempotency, reconciliation, audit trails
+Commerce & Payments   Checkout state, signed callbacks, transactions, inventory safety
+Databases             MySQL/MariaDB, schemas, migrations, indexes, locking, debugging
 Mobile                Flutter applications connected to Laravel APIs
 ```
 
@@ -47,42 +48,42 @@ My default engineering priorities are:
 3. **Observable integrations instead of silent failures**
 4. **Idempotent, retry-safe webhooks and background work**
 5. **Explicit tenant and authorization boundaries**
-6. **Transactions and reconciliation for payment/inventory state**
-7. **Maintainable extension points instead of core/theme hacks**
-8. **Practical architecture that fits the real team and traffic**
+6. **Transactions and reconciliation for payment and inventory state**
+7. **Maintainable extension points instead of core or theme hacks**
+8. **Architecture that fits the real product, team, and traffic**
 
 ## Public engineering standards
 
-The featured repositories are maintained as reviewable engineering samples rather than screenshots or opaque archives. Depending on the project, they include:
+The featured code repositories include the evidence needed for review:
 
 - recognized open-source licenses;
-- installation and architecture documentation;
-- automated tests executed in GitHub Actions;
-- pull-request workflows and focused commits;
-- secret-pattern/history scanning for payment integrations;
-- generated-dependency and local-artifact checks;
-- security and failure-mode documentation;
-- explicit notes where production code remains private.
+- setup, architecture, security, and failure-mode documentation;
+- automated tests run in GitHub Actions;
+- issue → branch → pull request workflows;
+- focused commits and reviewable changes;
+- CI checks for dependencies, migrations, syntax, tests, and obvious secret patterns;
+- explicit boundaries between public samples and private production work.
 
-Older empty or ZIP-only repositories are marked clearly as historical so they are not confused with current work.
+I do not present my own repository pull requests as external open-source contributions. Contributing useful fixes upstream to established projects is a separate goal I am actively working toward.
 
 ## Selected production experience
 
-A large part of my current production work is private. It includes:
+A large part of my current work is private. It includes:
 
 - multi-tenant Laravel SaaS platforms;
 - survey and field-data workflows with web and Flutter clients;
 - geofenced operations and dynamic forms;
-- role-based access, OTP and mobile API flows;
+- role-based access, OTP, and mobile API flows;
 - analytics and AI-assisted product capabilities;
-- WordPress/Joomla extensions and existing-codebase debugging;
-- payment, hosting, DNS and third-party service integrations.
+- WordPress and Joomla extensions;
+- payment, hosting, DNS, and third-party service integrations;
+- debugging and extending systems I did not originally build.
 
-For client and proprietary product work, I publish sanitized architecture decisions or reference implementations instead of exposing customer source, credentials, or business data.
+For proprietary products and client work, I publish sanitized architecture decisions or reference implementations instead of exposing customer source, credentials, or business data.
 
-## Work with me
+## Remote delivery
 
-I’m best suited for work where someone needs to understand an existing system, communicate clearly about risk and trade-offs, debug at code level, integrate external services, and leave the codebase easier to operate afterward.
+My freelance work has trained me to investigate incomplete requirements, communicate progress asynchronously, explain trade-offs, and deliver production changes for clients in other countries.
 
 - Upwork: [Dagemawi Alemayehu](https://www.upwork.com/freelancers/dagemawialemayehu)
 - GitHub: [DagemawiDeveloper](https://github.com/DagemawiDeveloper)
