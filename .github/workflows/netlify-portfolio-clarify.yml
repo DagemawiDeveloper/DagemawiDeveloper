@@ -1,0 +1,97 @@
+name: Deploy clarified portfolio copy
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/netlify-portfolio-clarify.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Rebuild currently deployed portfolio source
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p deploy
+          base="https://raw.githubusercontent.com/DagemawiDeveloper/DagemawiDeveloper/c50a72b38b3ccfbb40c3f1e7e9af13fb056e739b/deploy"
+          for n in 0 1 2 3; do
+            curl -fsSL "$base/portfolio.part${n}.b64" >> deploy/portfolio.b64
+          done
+          base64 --decode deploy/portfolio.b64 > deploy/portfolio.zip
+          mkdir -p deploy/site
+          unzip -q deploy/portfolio.zip -d deploy/site
+          test -f deploy/site/index.html
+
+      - name: Clarify Dagu evidence and remove dead My Health Hub link
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          site = Path('deploy/site')
+          index = site / 'index.html'
+          s = index.read_text()
+
+          # Dagu: make source boundaries unmistakable while retaining architecture notes as evidence.
+          dagu_link = re.compile(r'<a class="text-link" href="https://github\.com/DagemawiDeveloper/saas-architecture-showcase"[^>]*>.*?</a>', re.S)
+          replacement = '''<p class="project-note"><strong>Source:</strong> Dagu is a private commercial codebase. The public GitHub link below contains sanitized architecture documentation and ADRs only — not Dagu application source.</p>\n            <a class="text-link" href="https://github.com/DagemawiDeveloper/saas-architecture-showcase" target="_blank" rel="noreferrer">Read architecture notes (documentation only) <img src="assets/icons/arrow.svg" alt=""></a>'''
+          if dagu_link.search(s):
+              s = dagu_link.sub(replacement, s, count=1)
+          elif 'not Dagu application source' not in s:
+              raise SystemExit('Could not locate Dagu architecture link')
+
+          # My Health Hub: keep the case study, remove the unavailable live-site link.
+          s = s.replace('PRODUCTION CLIENT WORK', 'CLIENT WORDPRESS PROJECT')
+          s = re.sub(r'\s*<a class="text-link" href="https?://(?:www\.)?myhealth[^\"]*"[^>]*>.*?</a>', '', s, flags=re.S | re.I)
+          if 'WordPress Directory & Data Platform' in s and 'GeoDirectory' in s and '<span>Production debugging</span>' not in s:
+              impact = re.compile(r'(<div class="impact-grid">.*?</div>)', re.S)
+              m = impact.search(s)
+              if m:
+                  s = s[:m.end()] + '\n            <div class="tech-row"><span>WordPress</span><span>GeoDirectory</span><span>Data workflows</span><span>Production debugging</span></div>' + s[m.end():]
+
+          index.write_text(s)
+
+          css = site / 'styles.css'
+          if css.exists():
+              c = css.read_text()
+              if '.project-note{' not in c:
+                  c += '\n.project-note{margin:0 0 18px;padding:13px 14px;border-left:3px solid var(--teal);border-radius:0 10px 10px 0;background:rgba(20,125,146,.07);font-size:13px;line-height:1.55;color:var(--muted)}.project-note strong{color:var(--navy)}\n'
+                  css.write_text(c)
+
+          # If the deployed package includes a web résumé, keep its wording consistent.
+          resume = site / 'resume.html'
+          if resume.exists():
+              r = resume.read_text()
+              r = r.replace('Lead Product Engineer · Private commercial product', 'Lead Product Engineer · Private commercial product · source code private')
+              r = r.replace('WordPress directory and data platform · Production client work', 'WordPress directory and data platform · Client project')
+              r = re.sub(r'\s*<a[^>]+href="https?://(?:www\.)?myhealth[^\"]*"[^>]*>.*?</a>', '', r, flags=re.S | re.I)
+              resume.write_text(r)
+
+          final = index.read_text()
+          assert 'not Dagu application source' in final
+          assert 'Read architecture notes (documentation only)' in final
+          assert not re.search(r'href="https?://(?:www\.)?myhealth', final, re.I)
+          PY
+
+      - name: Deploy to existing Netlify site
+        working-directory: deploy/site
+        run: >-
+          npx -y @netlify/mcp@latest
+          --site-id 0f6c9787-1846-48bd-9703-663ac842637d
+          --proxy-path "https://netlify-mcp.netlify.app/proxy/eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIn0..ZS9ADlamyeBiylsq.MvEUJTL9ed6NLKTaGXopfwg7bzT8iUDPLZyoy60X6Ig7UxgL3VO3TmtrBeNhAwGPMuLRYu0ViSviiadb4CvYp4CQywwd5k8eVSK0tJRqfZzWHHLdEgtNg088Y0bIqIt7ZvrJU08jxhXmwY-IYTB3tczU8T_I2qVD7UMC58luEcwF1VvHpdSTB0rPJhkUN28zBCkDRn9jPwcgYrsfdhHH65ROqJ1ud9q9JSZCYfw8tKoBslc3DjDYX49KYi5Qfa2YFUEuWKXfWTK-D50KHG6WGOkEAMFE8mLN7aLNidW4nTJ14gf7WodBrkXEaygsT-gr-AaitvVCcWIhkcBzshxKygeHPY95LCynccqf65gavHWnGH4QVQmHf1w2hnUp3M_Tz_eEkgnR.BA_JUvs3ciTPRUmkKcEgeQ"
