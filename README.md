@@ -2,7 +2,18 @@
 
 **PHP / Laravel / WordPress / REST API / SaaS Engineer**
 
-I build and debug production web systems—especially the parts that become difficult once a project moves beyond basic CRUD: plugin conflicts, API integrations, background jobs, multi-tenant data, payments, webhooks, database issues, and existing systems that need careful troubleshooting instead of a rewrite.
+I build and debug production web systems—especially the parts that become difficult after basic CRUD: existing codebases, plugin conflicts, payment reconciliation, API integrations, background jobs, multi-tenant data, webhooks, database failures, and systems that need a careful fix instead of an unnecessary rewrite.
+
+## Engineering evidence
+
+| Project | What the repository proves |
+|---|---|
+| **[WP Integration Toolkit](https://github.com/DagemawiDeveloper/wordpress-plugin-development-demo)** | Installable GPL WordPress plugin; REST/AJAX integration; authenticated webhooks with replay protection; fail-closed secret encryption; bounded logging; PHPUnit and multi-version CI |
+| **[RelayHub](https://github.com/DagemawiDeveloper/laravel-api-integration-demo)** | Laravel package boundaries; queues; deterministic idempotency; retries/backoff; dead-letter handling; inbound/outbound webhook authentication; lifecycle tests and CI |
+| **[Boldinone](https://github.com/DagemawiDeveloper/Boldinone)** | Laravel commerce application; server-authoritative pricing; Stripe signature verification; durable-order reconciliation; row locks; retry-safe inventory finalization; PHPUnit in CI |
+| **[Commission Calculation Engine](https://github.com/DagemawiDeveloper/CommissionApp-Dagemawi)** | Framework-independent PHP domain modeling; stateful weekly business rules; currency normalization; regression tests; reproducible Composer install and repository-hygiene CI |
+| **[SaaS Architecture Showcase](https://github.com/DagemawiDeveloper/saas-architecture-showcase)** | Anonymized ADRs from multi-tenant survey/data-collection work: modular monolith, tenant isolation, idempotent mobile submissions, object storage, queue boundaries and failure modes |
+| **[Telebirr PHP Reference](https://github.com/DagemawiDeveloper/Telebirr)** | Lower-level payment integration, RSA signing, runtime secret configuration, TLS verification, full-history Gitleaks scanning and PHP quality checks |
 
 ## What I work on
 
@@ -10,78 +21,72 @@ I build and debug production web systems—especially the parts that become diff
 WordPress & PHP       Plugin development, troubleshooting, hooks, AJAX, REST APIs
 Laravel & SaaS        Backend architecture, APIs, queues, multi-tenancy, dashboards
 API Integrations      Webhooks, HMAC signing, retries, idempotency, external services
-Commerce & Payments   E-commerce workflows, Stripe Checkout, payment webhooks
-Databases             MySQL, schema design, migrations, query/debugging work
-Mobile                Flutter apps connected to Laravel APIs
+Commerce & Payments   Checkout workflows, signed callbacks, reconciliation, inventory
+Databases             MySQL/MariaDB, schema design, migrations, transactions, debugging
+Mobile                Flutter applications connected to Laravel APIs
 ```
 
-## Featured engineering work
-
-| Project | What it demonstrates |
-|---|---|
-| **[WP Integration Toolkit](https://github.com/DagemawiDeveloper/wordpress-plugin-development-demo)** | WordPress plugin architecture, REST endpoints, AJAX, signed webhooks, encrypted settings, logging and retry workflows |
-| **[Boldinone](https://github.com/DagemawiDeveloper/Boldinone)** | Real Laravel e-commerce application: catalog, cart, roles/permissions, administration, Stripe Checkout, idempotent payment handling, orders, inventory, wishlist and reviews |
-| **[RelayHub](https://github.com/DagemawiDeveloper/laravel-api-integration-demo)** | Laravel API integrations, queues, HMAC webhooks, idempotency, retries, dead-letter handling and tests |
-| **[SaaS Architecture Showcase](https://github.com/DagemawiDeveloper/saas-architecture-showcase)** | Multi-tenant architecture, security, queue design, observability, deployment and failure-mode decisions |
-| **[Commission Calculation Engine](https://github.com/DagemawiDeveloper/CommissionApp-Dagemawi)** | Framework-independent PHP, business rules, weekly limits, currency conversion, PSR-4 design and PHPUnit testing |
-
-## The kind of problems I like solving
-
-- “This WordPress/WooCommerce plugin setting refuses to save.”
-- “Our API integration works sometimes, but retries create duplicate records.”
-- “We need to receive and verify webhooks securely.”
-- “This Laravel job/API is failing in production and we need the real cause.”
-- “Our checkout/payment callback needs to be reliable and traceable.”
-- “Our SaaS needs tenant isolation, queues, roles and a maintainable backend structure.”
-- “The existing codebase works, but adding features is becoming risky.”
-
-I prefer to trace the actual failure path, make the smallest safe change, and leave the codebase easier to operate afterward.
-
-## Architecture mindset
+## How I approach a difficult system
 
 ```mermaid
 flowchart LR
-    ISSUE[Problem / Requirement] --> TRACE[Trace actual flow]
+    ISSUE[Problem / Requirement] --> REPRO[Reproduce]
+    REPRO --> TRACE[Trace actual flow]
     TRACE --> ROOT[Find root cause]
-    ROOT --> DESIGN[Choose maintainable fix]
-    DESIGN --> BUILD[Implement]
+    ROOT --> OPTIONS[Compare trade-offs]
+    OPTIONS --> BUILD[Make smallest safe change]
     BUILD --> VERIFY[Test + observe]
-    VERIFY --> DOC[Document handoff]
+    VERIFY --> REVIEW[PR + review]
+    REVIEW --> DOC[Document handoff]
 ```
 
 My default engineering priorities are:
 
 1. **Correctness before cleverness**
-2. **Observable integrations instead of silent failures**
-3. **Idempotent/retry-safe background work and webhooks**
-4. **Clear tenant and authorization boundaries**
-5. **Maintainable extension points instead of core/theme hacks**
-6. **Practical solutions that fit the existing system**
+2. **Security controls that fail closed**
+3. **Observable integrations instead of silent failures**
+4. **Idempotent, retry-safe webhooks and background work**
+5. **Explicit tenant and authorization boundaries**
+6. **Transactions and reconciliation for payment/inventory state**
+7. **Maintainable extension points instead of core/theme hacks**
+8. **Practical architecture that fits the real team and traffic**
+
+## Public engineering standards
+
+The featured repositories are maintained as reviewable engineering samples rather than screenshots or opaque archives. Depending on the project, they include:
+
+- recognized open-source licenses;
+- installation and architecture documentation;
+- automated tests executed in GitHub Actions;
+- pull-request workflows and focused commits;
+- secret-pattern/history scanning for payment integrations;
+- generated-dependency and local-artifact checks;
+- security and failure-mode documentation;
+- explicit notes where production code remains private.
+
+Older empty or ZIP-only repositories are marked clearly as historical so they are not confused with current work.
 
 ## Selected production experience
 
 A large part of my current production work is private. It includes:
 
-- Multi-tenant SaaS platforms with Laravel backends
-- Survey/data-collection workflows with web and Flutter clients
-- Geofenced field operations and dynamic forms
-- API and automation services
-- AI-assisted analytics and developer tooling
-- WordPress, landing-page and external-data integrations
+- multi-tenant Laravel SaaS platforms;
+- survey and field-data workflows with web and Flutter clients;
+- geofenced operations and dynamic forms;
+- role-based access, OTP and mobile API flows;
+- analytics and AI-assisted product capabilities;
+- WordPress/Joomla extensions and existing-codebase debugging;
+- payment, hosting, DNS and third-party service integrations.
 
-For private client/product work, I publish sanitized architecture and reference implementations rather than exposing proprietary source code.
-
-## Public repositories
-
-The featured projects above are the best starting point if you're evaluating my current Laravel, WordPress, integration and system-design work. Older repositories that are only historical artifacts are labeled clearly so they are not confused with current engineering samples.
+For client and proprietary product work, I publish sanitized architecture decisions or reference implementations instead of exposing customer source, credentials, or business data.
 
 ## Work with me
 
-I’m best suited for projects where you need someone who can **understand an existing system, debug it at code level, integrate external services, and ship a maintainable fix**.
+I’m best suited for work where someone needs to understand an existing system, communicate clearly about risk and trade-offs, debug at code level, integrate external services, and leave the codebase easier to operate afterward.
 
 - Upwork: [Dagemawi Alemayehu](https://www.upwork.com/freelancers/dagemawialemayehu)
 - GitHub: [DagemawiDeveloper](https://github.com/DagemawiDeveloper)
 
 ---
 
-**Core stack:** PHP · Laravel · WordPress · MySQL · JavaScript · REST APIs · Stripe · Flutter
+**Core stack:** PHP · Laravel · WordPress · MySQL/MariaDB · JavaScript · REST APIs · Stripe · Flutter
