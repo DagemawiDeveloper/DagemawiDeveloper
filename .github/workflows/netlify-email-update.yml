@@ -1,0 +1,111 @@
+name: Update portfolio contact email
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/netlify-email-update.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Rebuild portfolio source
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p deploy
+          base="https://raw.githubusercontent.com/DagemawiDeveloper/DagemawiDeveloper/c50a72b38b3ccfbb40c3f1e7e9af13fb056e739b/deploy"
+          for n in 0 1 2 3; do
+            curl -fsSL "$base/portfolio.part${n}.b64" >> deploy/portfolio.b64
+          done
+          base64 --decode deploy/portfolio.b64 > deploy/portfolio.zip
+          mkdir -p deploy/site
+          unzip -q deploy/portfolio.zip -d deploy/site
+          test -f deploy/site/index.html
+          test -f deploy/site/resume.html
+
+      - name: Apply final portfolio corrections
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          site = Path('deploy/site')
+          index = site / 'index.html'
+          s = index.read_text()
+
+          # Dagu is a private commercial codebase; public repo is documentation only.
+          dagu_link = re.compile(r'<a class="text-link" href="https://github\.com/DagemawiDeveloper/saas-architecture-showcase"[^>]*>.*?</a>', re.S)
+          replacement = '''<p class="project-note"><strong>Source:</strong> Dagu is a private commercial codebase. The public GitHub link below contains sanitized architecture documentation and ADRs only — not Dagu application source.</p>\n            <a class="text-link" href="https://github.com/DagemawiDeveloper/saas-architecture-showcase" target="_blank" rel="noreferrer">Read architecture notes (documentation only) <img src="assets/icons/arrow.svg" alt=""></a>'''
+          if dagu_link.search(s):
+              s = dagu_link.sub(replacement, s, count=1)
+
+          # Keep My Health Hub as client evidence, but do not link the unavailable live site.
+          s = s.replace('PRODUCTION CLIENT WORK', 'CLIENT WORDPRESS PROJECT')
+          s = re.sub(r'\s*<a class="text-link" href="https?://(?:www\.)?myhealth[^\"]*"[^>]*>.*?</a>', '', s, flags=re.S | re.I)
+
+          # Route résumé CTAs to the corrected web résumé and remove stale downloads.
+          s = re.sub(r'href="assets/Dagemawi_Alemayehu_Resume\.(?:pdf|docx)"', 'href="resume.html"', s, flags=re.I)
+          index.write_text(s)
+
+          css = site / 'styles.css'
+          if css.exists():
+              c = css.read_text()
+              if '.project-note{' not in c:
+                  c += '\n.project-note{margin:0 0 18px;padding:13px 14px;border-left:3px solid var(--teal);border-radius:0 10px 10px 0;background:rgba(20,125,146,.07);font-size:13px;line-height:1.55;color:var(--muted)}.project-note strong{color:var(--navy)}\n'
+                  css.write_text(c)
+
+          resume = site / 'resume.html'
+          r = resume.read_text()
+          r = r.replace('Lead Product Engineer · Private commercial product', 'Lead Product Engineer · Private commercial product · source code private')
+          r = r.replace('WordPress directory and data platform · Production client work', 'WordPress directory and data platform · Client project')
+          r = re.sub(r'\s*<a[^>]+href="https?://(?:www\.)?myhealth[^\"]*"[^>]*>.*?</a>', '', r, flags=re.S | re.I)
+          resume.write_text(r)
+
+          # Replace the old contact address everywhere in the public site package.
+          for path in site.rglob('*'):
+              if path.is_file() and path.suffix.lower() in {'.html', '.css', '.js', '.json', '.xml', '.txt', '.md', '.toml'}:
+                  text = path.read_text(errors='ignore')
+                  if 'dagemawi23@gmail.com' in text:
+                      path.write_text(text.replace('dagemawi23@gmail.com', 'dagemawi409@gmail.com'))
+
+          # Do not ship older downloadable CV assets that may contain stale metadata/links.
+          for name in ['Dagemawi_Alemayehu_Resume.pdf', 'Dagemawi_Alemayehu_Resume.docx']:
+              p = site / 'assets' / name
+              if p.exists():
+                  p.unlink()
+
+          # Submission assertions.
+          all_text = '\n'.join(
+              p.read_text(errors='ignore') for p in site.rglob('*')
+              if p.is_file() and p.suffix.lower() in {'.html', '.css', '.js', '.json', '.xml', '.txt', '.md', '.toml'}
+          )
+          assert 'dagemawi23@gmail.com' not in all_text
+          assert 'dagemawi409@gmail.com' in all_text
+          assert 'not Dagu application source' in all_text
+          assert not re.search(r'href="https?://(?:www\.)?myhealth', all_text, re.I)
+          assert not (site / 'assets' / 'Dagemawi_Alemayehu_Resume.pdf').exists()
+          assert not (site / 'assets' / 'Dagemawi_Alemayehu_Resume.docx').exists()
+          PY
+
+      - name: Deploy to existing Netlify site
+        working-directory: deploy/site
+        run: >-
+          npx -y @netlify/mcp@latest
+          --site-id 0f6c9787-1846-48bd-9703-663ac842637d
+          --proxy-path "https://netlify-mcp.netlify.app/proxy/eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIn0..zUokTj5VafK2Jzaj.sr410dezO7UQGJyCo-Xh4nedeEXbJ1AcSySN7loNhvvVze6V7nyKnA6IZXo3awsPETBJsAdKh4HlDLH0OHBwhzMmBzwIgSPdpng4VRfsdMiXoS8M7k0XpZIv57KME8mw4ToU-DWXY5M0G3V6IZXAr6G6wOJZvYoGKKcKGvRjyajqyw6mCJr8FFywjx5kl9BmKDYN-jfnbuufn_b2-uL6Vj6jUsAIVyHb1NJCVwZrTuH4nG-pYqO7UWHNCl0UTEz5VG1Fd-M4LcyyCNflXBXxbHiXFupR3w10MiABWMI4Vfk0v-k4QGiJ4J2ivCiByfxwM640gWnF7EHNNSx2g6LY0ixYprHT2m2qc_aaxr-lgZ1wnwolI-2DmLOc9S_xwtBmbuiOWx70.U2uAw90LwxAJINr4yRLHQg"
